@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,24 +11,25 @@ namespace BackOfficePOS.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly DataContext _dataContext;
-        public ProductController(DataContext dataContext)
+        private readonly IProductRepository _productRepository;
+        public ProductController(IProductRepository productRepository)
         {
-            _dataContext = dataContext;
+           _productRepository = productRepository;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Product>>> GetProducts ()
+        public async Task<ActionResult<List<Product>>> GetProducts()
         {
-            var products = await _dataContext.Products.ToListAsync();
-            return Ok(products);
+            var Products =  await _productRepository.GetProductsAsync();
+            return Ok(Products);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProductbyID(int id)
         {
-            var products = await _dataContext.Products.FindAsync(id);
-            return Ok(products);
+            var Product = await _productRepository.GetProductbyIDAsync(id);
+            return Ok(Product);
+             ;
         }
     }
 }
