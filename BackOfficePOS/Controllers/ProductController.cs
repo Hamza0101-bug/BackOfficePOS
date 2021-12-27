@@ -29,7 +29,7 @@ namespace BackOfficePOS.Controllers
         {
             var Product = await _productRepository.GetProductbyIDAsync(id);
             return Ok(Product);
-             ;
+             
         }
     }
 }

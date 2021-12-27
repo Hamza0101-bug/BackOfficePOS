@@ -20,7 +20,10 @@ namespace Infrastructure.Data.Repositories
         {
             try
             {
-                var product = await _dataContext.Products.FindAsync(id);
+                var product = await _dataContext.Products
+                    .Include(c=>c.Category)
+                    .Include(b=>b.Brand)
+                    .FirstOrDefaultAsync(i=>i.Id == id);
                 return product;
             }
             catch (Exception ex)
@@ -33,7 +36,10 @@ namespace Infrastructure.Data.Repositories
         {
             try
             {
-                var products = await _dataContext.Products.ToListAsync();
+                var products = await _dataContext.Products
+                    .Include(c => c.Category)
+                    .Include(b => b.Brand)
+                    .ToListAsync();
                 return products;
             }
             catch (Exception ex)

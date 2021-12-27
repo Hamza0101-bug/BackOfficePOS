@@ -5,8 +5,26 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+ //using(var scope = builder.Services.BuildServiceProvider().CreateScope())
+ // {
+ //   var service = scope.ServiceProvider;
+ //   var loggerFactory = service.GetRequiredService<ILoggerFactory>();   
+ //   try
+ //   {
+ //     var context = service.GetRequiredService<DataContext>();
+ //     await context.Database.MigrateAsync();
+ //   }
+ //   catch(Exception ex)
+ //   {
+ //       var logger = loggerFactory.CreateLogger<Program>();
+ //       logger.LogError(ex, "An Error Occured during Migrations");
+ //   }
+ // }
+
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IBrandRepository, BrandRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 // Add services to the container.
 
 builder.Services.AddControllers();
