@@ -1,6 +1,8 @@
 using Core.Interfaces;
+using Core.Interfaces.GenericInterface;
 using Infrastructure.Data;
 using Infrastructure.Data.Repositories;
+using Infrastructure.Data.Repositories.GenereicRepository;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,11 +22,13 @@ var builder = WebApplication.CreateBuilder(args);
  //       logger.LogError(ex, "An Error Occured during Migrations");
  //   }
  // }
-
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IBrandRepository, BrandRepository>();
+
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+builder.Services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
 // Add services to the container.
 
 builder.Services.AddControllers();
