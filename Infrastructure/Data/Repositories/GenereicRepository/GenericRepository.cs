@@ -1,5 +1,7 @@
 ﻿using Core.Entities;
 using Core.Interfaces.GenericInterface;
+using Core.Interfaces.Specification;
+using Infrastructure.Data.SpecificationEvaluator;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -28,6 +30,8 @@ namespace Infrastructure.Data.Repositories.GenereicRepository
             }
         }
 
+  
+
         public async Task<IReadOnlyList<T>> ListAllAsync()
         {
 
@@ -39,6 +43,21 @@ namespace Infrastructure.Data.Repositories.GenereicRepository
             {
                 throw ex;
             }
+        }
+        public async Task<T> GetEntitywithspec(ISpecification<T> spec)
+        {
+            return await ApplySpecification(spec).FirstOrDefaultAsync();
+        }
+        public async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec)
+        {
+            return await ApplySpecification(spec).ToListAsync();
+        }
+
+        private IQueryable<T> ApplySpecification(ISpecification<T> spec)
+        {
+            return SpecificationEvaluator<T>.
+                GetQuary(_dataContext.
+                Set<T>().AsQueryable(), spec);
         }
     }
 }

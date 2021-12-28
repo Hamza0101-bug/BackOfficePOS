@@ -1,5 +1,8 @@
-﻿using Core.Entities;
+﻿using AutoMapper;
+using BackOfficePOS.DTOs;
+using Core.Entities;
 using Core.Interfaces.GenericInterface;
+using Core.Interfaces.Specification;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,21 +15,34 @@ namespace BackOfficePOS.Controllers
         private readonly IGenericRepository<Product>   _productRepo;
         private readonly IGenericRepository<Brand>     _brandRepo;
         private readonly IGenericRepository<Category> _categoryRepo;
-
+        private readonly IMapper _mapper;
         public GenericController(
             IGenericRepository<Product> productRepo,
             IGenericRepository<Brand> brandRepo,
-            IGenericRepository<Category> categoryRepo )
+            IGenericRepository<Category> categoryRepo, 
+            IMapper mapper)
         {
             _productRepo = productRepo;
             _brandRepo = brandRepo;
             _categoryRepo = categoryRepo;
+            _mapper = mapper;
         }
 
+
         [HttpGet("Product")]
-        public async Task<ActionResult<List<Product>>> GetProducts()
+        public async Task<ActionResult<IReadOnlyList<ProductDto>>> GetProducts()
         {
-            return Ok(await _productRepo.ListAllAsync());
+            var spec = new ProductWithBrandCategorySpecification();
+            var products = await _productRepo.ListAsync(spec);
+            return Ok( _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDto>>(products));
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ProductDto>> GetEntitywithspec(int id)
+        {
+            var spec = new ProductWithBrandCategorySpecification(id);
+            var product = await _productRepo.GetEntitywithspec(spec);
+            return Ok(_mapper.Map<Product, ProductDto>(product));
         }
         [HttpGet("Brands")]
         public async Task<ActionResult<List<Brand>>> GetProductBrands()
