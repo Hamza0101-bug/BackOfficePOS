@@ -30,11 +30,8 @@ namespace Infrastructure.Data.Repositories.GenereicRepository
             }
         }
 
-  
-
         public async Task<IReadOnlyList<T>> ListAllAsync()
         {
-
             try
             {
                 return await _dataContext.Set<T>().ToListAsync();
@@ -56,8 +53,7 @@ namespace Infrastructure.Data.Repositories.GenereicRepository
         private IQueryable<T> ApplySpecification(ISpecification<T> spec)
         {
             return SpecificationEvaluator<T>.
-                GetQuary(_dataContext.
-                Set<T>().AsQueryable(), spec);
+                GetQuary(_dataContext.Set<T>().AsQueryable(), spec);
         }
     }
 }

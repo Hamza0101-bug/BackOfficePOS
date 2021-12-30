@@ -10,7 +10,7 @@ namespace Core.Interfaces
 {
     public interface ICategoryRepository
     {
-        public Task<IReadOnlyList<Category>> GetProductCategoryAsync();
-        public Task<Category> GetProductCategorybyIDAsync(int id);
+        public Task<IReadOnlyList<Category>> GetProductCategoryAsync(); // Get List Of Category
+        public Task<Category> GetProductCategorybyIDAsync(int id); // Get Category By Id
     }
 }

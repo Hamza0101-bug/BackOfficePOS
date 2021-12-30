@@ -9,7 +9,7 @@ namespace Core.Interfaces
 {
     public interface IBrandRepository
     {
-        public Task<IReadOnlyList<Brand>> GetProductBrandsAsync();
-        public Task<Brand> GetProductBrandbyIDAsync(int id);
+        public Task<IReadOnlyList<Brand>> GetProductBrandsAsync(); // Get List of Brands
+        public Task<Brand> GetProductBrandbyIDAsync(int id); //Get Brand by ID
     }
 }

@@ -8,6 +8,6 @@ namespace Core.Entities
 {
     public class BaseEntity
     {
-        public int Id { get; set; }
+        public int Id { get; set; } // parant class for all other cass to ge the id property 
     }
 }

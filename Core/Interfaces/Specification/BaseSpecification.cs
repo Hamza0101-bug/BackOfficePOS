@@ -13,7 +13,7 @@ namespace Core.Interfaces.Specification
         {
 
         }
-        public BaseSpecification( Expression<Func<T, bool>> criteria)
+        public BaseSpecification( Expression<Func<T, bool>> criteria) // for whare purpose
         {
             Criteria = criteria;
         }
