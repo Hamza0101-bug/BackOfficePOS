@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BackOfficePOS.DTOs;
+using BackOfficePOS.Errors;
 using Core.Entities;
 using Core.Interfaces.GenericInterface;
 using Core.Interfaces.Specification;
@@ -42,6 +43,7 @@ namespace BackOfficePOS.Controllers
         {
             var spec = new ProductWithBrandCategorySpecification(id);
             var product = await _productRepo.GetEntitywithspec(spec);
+            if (product == null) return NotFound(new ApiResponse(404));
             return Ok(_mapper.Map<Product, ProductDto>(product));
         }
         [HttpGet("Brands")]

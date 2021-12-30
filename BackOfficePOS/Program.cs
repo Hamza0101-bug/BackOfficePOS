@@ -1,9 +1,13 @@
+using BackOfficePOS.Errors;
+using BackOfficePOS.Extensions;
 using BackOfficePOS.Helpers;
+using BackOfficePOS.Middleware;
 using Core.Interfaces;
 using Core.Interfaces.GenericInterface;
 using Infrastructure.Data;
 using Infrastructure.Data.Repositories;
 using Infrastructure.Data.Repositories.GenereicRepository;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,36 +27,25 @@ var builder = WebApplication.CreateBuilder(args);
 //       logger.LogError(ex, "An Error Occured during Migrations");
 //   }
 // }
+builder.Services.AddApplicationServices();
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddAutoMapper(typeof(MappingProfilescs));
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IBrandRepository, BrandRepository>();
-
-builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-
-builder.Services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
+builder.Services.AddSwaggerDocumention();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
+app.UseMiddleware<ExceptionMiddleware>();
+app.UseSwaagerDocumentation();
+//if (app.Environment.IsDevelopment()) 
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI(c=>c.SwaggerEndpoint("/swagger/v1/swagger.jason","Api v1"));
+//}
+app.UseStatusCodePagesWithReExecute("/error/{0}");
 app.UseHttpsRedirection();
- app.UseStaticFiles();
+app.UseStaticFiles();
 app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().WithExposedHeaders("Application-Error"));
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
