@@ -14,7 +14,7 @@ namespace Core.Interfaces.Specification
         public ProductWithBrandCategorySpecification(ProductSpecParams proprams) :
             base 
             (x => 
-            (string.IsNullOrEmpty(proprams.Search) || x.Name.ToLower().Contains(proprams.Search)) &&
+            (string.IsNullOrEmpty(proprams.Search) ||x.Description.ToLower().Contains(proprams.Search) || x.Name.ToLower().Contains(proprams.Search)) &&
             (!proprams.BrandId.HasValue || x.BrandID== proprams.BrandId) && 
             (!proprams.CategoryID.HasValue || x.CategoryID ==proprams.CategoryID))
         {

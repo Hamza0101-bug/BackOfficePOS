@@ -12,7 +12,7 @@ namespace Core.Interfaces.Specification.EnitiySpecificationImplementation
     {
         public ProductWithFilterCountSpec(ProductSpecParams productSpecParams) :
            base(x =>
-           (string.IsNullOrEmpty(productSpecParams.Search) || x.Name.ToLower().Contains(productSpecParams.Search)) &&
+           (string.IsNullOrEmpty(productSpecParams.Search) || x.Description.ToLower().Contains(productSpecParams.Search) || x.Name.ToLower().Contains(productSpecParams.Search)) &&
            (!productSpecParams.BrandId.HasValue || x.BrandID == productSpecParams.BrandId) &&
            (!productSpecParams.CategoryID.HasValue || x.CategoryID == productSpecParams.CategoryID))
         {

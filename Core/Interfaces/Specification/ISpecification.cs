@@ -10,7 +10,7 @@ namespace Core.Interfaces.Specification
     public interface ISpecification<T>
     {
 
-        // In this Interface we define expression for critera and Expression of Includs list
+        // In this Interface we define expression for "critera" and Expression of "Includs" list
         // for navigation properies lik product have category so for get the product with category 
         Expression<Func<T, bool>> Criteria { get; }
         List<Expression<Func<T, Object>>> Includes { get; }

@@ -11,7 +11,11 @@ namespace Infrastructure.Data.SpecificationEvaluator
 {
     public class SpecificationEvaluator<TEntity> where TEntity : BaseEntity
     {
-        public static IQueryable<TEntity> GetQuary(IQueryable<TEntity> inputQuary,
+        // we create static funtion to get the <T> Quary
+        // we just call by class name without creating class object like
+        // Specification Evaluator.GetQuary
+        public static IQueryable<TEntity> GetQuary(
+            IQueryable<TEntity> inputQuary,
             ISpecification<TEntity> spec)
         {
             var quary = inputQuary;

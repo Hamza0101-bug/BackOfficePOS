@@ -18,23 +18,23 @@ namespace Core.Interfaces.Specification
             Criteria = criteria;
         }
 
-        public Expression<Func<T, bool>> Criteria {get;}
-        public List<Expression<Func<T, object>>> Includes { get; } =
-        new List<Expression<Func<T, object>>>();
-
-        // Order By Word
-        public Expression<Func<T, object>> Orderby { get; private set;}
-
-        public Expression<Func<T, object>> OrderbyDesc { get; private set;}
-      
+        public Expression<Func<T, bool>> Criteria {get; } // Property
+        public List<Expression<Func<T, object>>> Includes { get; } = new List<Expression<Func<T, object>>>(); // Property
         protected void AddIncludes(Expression<Func<T, Object>> IncludeExpression)
         {
             Includes.Add(IncludeExpression);
         }
+        // Order By Word
+        public Expression<Func<T, object>> Orderby { get; private set;} // Property
+
         protected void AddOrderby(Expression<Func<T, Object>> OrderbyExpression)
         {
             Orderby = OrderbyExpression;
         }
+
+        public Expression<Func<T, object>> OrderbyDesc { get; private set; } // Property
+
+
         protected void AddOrderbyDesc(Expression<Func<T, Object>> OrderbyDescExpression)
         {
             OrderbyDesc = OrderbyDescExpression;

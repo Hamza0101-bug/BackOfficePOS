@@ -1,7 +1,15 @@
-﻿using BackOfficePOS.Errors;
+﻿using AutoMapper;
+using BackOfficePOS.DTOs;
+using BackOfficePOS.Errors;
+using BackOfficePOS.Helpers;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Interfaces.GenericInterface;
+using Core.Interfaces.Specification;
+using Core.Interfaces.Specification.EnitiySpecificationImplementation;
+using Core.Interfaces.Specification.EnitiySpecificationImplementation.SpecForCount;
+using Core.Interfaces.Specification.EnitiySpecificationImplementation.SpectForData;
+using Core.Interfaces.Specification.EntitySpecifications;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,15 +20,25 @@ namespace BackOfficePOS.Controllers
     public class BrandController : BaseApiController
     {
         private readonly IGenericRepository<Brand> _brandRepo;
-        public BrandController(IGenericRepository<Brand> brandRepo)
+        private readonly IMapper _mapper;
+
+        public BrandController(IGenericRepository<Brand> brandRepo, IMapper mapper)
         {
             _brandRepo = brandRepo;
-        }
+            _mapper = mapper;
 
-        [HttpGet("Brands")]
-        public async Task<ActionResult<List<Brand>>> GetProductBrands()
+
+    }
+
+    [HttpPost("Brands")]
+        public async Task<ActionResult<Pagination<Brand>>> GetProductBrands([FromQuery]CommonSpecParams commonSpecParams)
         {
-            return Ok(await _brandRepo.ListAllAsync());
+            var spec = new BrandSpecification(commonSpecParams); // this spec use for adding Craiteria or adding includs
+            var countspec = new BrandWithFilterCountSpec(commonSpecParams); // this spec use to get the count of records and current page siza and index
+            var totalItem = await _brandRepo.CountAsync(countspec);
+            var brands = await _brandRepo.ListAsync(spec);
+            var data = _mapper.Map<IReadOnlyList<Brand>, IReadOnlyList<BrandDto>>(brands);
+            return Ok(new Pagination<BrandDto>(commonSpecParams.PageIndex, commonSpecParams.PageSize, totalItem, data));
         }
 
         [HttpGet("{id}")]

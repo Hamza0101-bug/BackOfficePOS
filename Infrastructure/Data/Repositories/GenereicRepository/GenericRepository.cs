@@ -18,7 +18,7 @@ namespace Infrastructure.Data.Repositories.GenereicRepository
         {
             _dataContext = dataContext;
         }
-        public async Task<T> GetByIdAsync(int id)
+        public async Task<T> GetByIdAsync(int id) // get record by id
         {
             try
             {
@@ -30,7 +30,7 @@ namespace Infrastructure.Data.Repositories.GenereicRepository
             }
         }
 
-        public async Task<IReadOnlyList<T>> ListAllAsync()
+        public async Task<IReadOnlyList<T>> ListAllAsync() // get list of Provided Entity or class
         {
             try
             {
@@ -50,15 +50,25 @@ namespace Infrastructure.Data.Repositories.GenereicRepository
             return await ApplySpecification(spec).ToListAsync();
         }
 
-        private IQueryable<T> ApplySpecification(ISpecification<T> spec)
+
+        public async Task<int> CountAsync(ISpecification<T> spec)
+        {
+            return await ApplySpecification(spec).CountAsync();
+        }
+
+
+        //  we provide specification of any <T where T is Entity or class> this function Return us Query of <T where T is Entity or class>
+        private IQueryable<T> ApplySpecification(ISpecification<T> spec) 
         {
             return SpecificationEvaluator<T>.
                 GetQuary(_dataContext.Set<T>().AsQueryable(), spec);
         }
 
-        public async Task<int> CountAsync(ISpecification<T> spec)
+        public async Task<T> SaveAsync(T obj)
         {
-            return await ApplySpecification(spec).CountAsync();
+             await _dataContext.Set<T>().AddAsync(obj);
+             await _dataContext.SaveChangesAsync();
+            return obj;
         }
     }
 }

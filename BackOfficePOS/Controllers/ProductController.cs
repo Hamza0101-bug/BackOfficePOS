@@ -28,11 +28,11 @@ namespace BackOfficePOS.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("Product")]
+        [HttpGet("Product")] // get all prducts
         public async Task<ActionResult<Pagination<ProductDto>>> GetProducts([FromQuery] ProductSpecParams proprams)
         {
-            var spec = new ProductWithBrandCategorySpecification(proprams);
-            var countspec = new ProductWithFilterCountSpec(proprams);
+            var spec = new ProductWithBrandCategorySpecification(proprams); // this spec use for adding Craiteria or adding includs
+            var countspec = new ProductWithFilterCountSpec(proprams); // this spec use to get the count of records and current page siza and index
             var totalItem =   await _productRepo.CountAsync(countspec);
             var products = await _productRepo.ListAsync(spec);
             var data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDto>>(products);
@@ -47,6 +47,15 @@ namespace BackOfficePOS.Controllers
             if (product == null) return NotFound(new ApiResponse(404));
             return Ok(_mapper.Map<Product, ProductDto>(product));
         }
-    
+        [HttpPost("SaveProduct")]
+
+        public async  Task<ActionResult<Product>> SaveProduct(productSaveDto producttosave)
+        {
+            var product = _mapper.Map<productSaveDto, Product>(producttosave);
+            
+            var p =  await _productRepo.SaveAsync(product);
+            return Ok(p);
+     
+        }
     }
 }
