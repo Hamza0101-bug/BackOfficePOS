@@ -14,5 +14,6 @@ namespace Core.Interfaces.GenericInterface
         Task<IReadOnlyList<T>> ListAllAsync(); // Get List of T type W/O Spec
         Task<T> GetEntitywithspec(ISpecification<T> spec);
         Task<IReadOnlyList<T>> ListAsync (ISpecification<T> spec);
+        Task<int> CountAsync (ISpecification<T> spec);
     }
 }

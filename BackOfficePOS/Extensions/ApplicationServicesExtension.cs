@@ -15,9 +15,7 @@ namespace BackOfficePOS.Extensions
 
 
             services.AddAutoMapper(typeof(MappingProfilescs));
-            services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IBrandRepository, BrandRepository>();
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
+
             services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
             // Add services to the container.
             services.Configure<ApiBehaviorOptions>(option =>

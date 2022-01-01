@@ -19,6 +19,18 @@ namespace Infrastructure.Data.SpecificationEvaluator
             {
                 quary = quary.Where(spec.Criteria);
             }
+            if (spec.Orderby != null)
+            {
+                quary = quary.OrderBy(spec.Orderby);
+            }
+            if (spec.OrderbyDesc != null)
+            {
+                quary = quary.OrderByDescending(spec.OrderbyDesc);
+            }
+            if (spec.IsPagingEnabled)
+            {
+                quary = quary.Skip(spec.Skip).Take(spec.Take);
+            }
             quary = spec.Includes
                 .Aggregate(quary, (current, includs) => current
                  .Include(includs));

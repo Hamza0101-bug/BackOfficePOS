@@ -1,5 +1,7 @@
-﻿using Core.Entities;
+﻿using BackOfficePOS.Errors;
+using Core.Entities;
 using Core.Interfaces;
+using Core.Interfaces.GenericInterface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,25 +9,26 @@ namespace BackOfficePOS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BrandController : ControllerBase
+    public class BrandController : BaseApiController
     {
-        private readonly IBrandRepository _brandRepository;
-        public BrandController(IBrandRepository brandRepository)
+        private readonly IGenericRepository<Brand> _brandRepo;
+        public BrandController(IGenericRepository<Brand> brandRepo)
         {
-            _brandRepository = brandRepository;
+            _brandRepo = brandRepo;
         }
 
-        [HttpGet]
+        [HttpGet("Brands")]
         public async Task<ActionResult<List<Brand>>> GetProductBrands()
         {
-            var Brands = await _brandRepository.GetProductBrandsAsync();
-            return Ok(Brands);
+            return Ok(await _brandRepo.ListAllAsync());
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Brand>> GetProductBrandbyID(int id)
         {
-            var brand = await _brandRepository.GetProductBrandbyIDAsync(id);
+            var brand = await _brandRepo.GetByIdAsync(id);
+            if (brand == null) return NotFound(new ApiResponse(404));
+
             return Ok(brand);
 
         }

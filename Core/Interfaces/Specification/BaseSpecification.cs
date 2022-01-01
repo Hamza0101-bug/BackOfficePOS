@@ -21,9 +21,39 @@ namespace Core.Interfaces.Specification
         public Expression<Func<T, bool>> Criteria {get;}
         public List<Expression<Func<T, object>>> Includes { get; } =
         new List<Expression<Func<T, object>>>();
+
+        // Order By Word
+        public Expression<Func<T, object>> Orderby { get; private set;}
+
+        public Expression<Func<T, object>> OrderbyDesc { get; private set;}
+      
         protected void AddIncludes(Expression<Func<T, Object>> IncludeExpression)
         {
             Includes.Add(IncludeExpression);
         }
+        protected void AddOrderby(Expression<Func<T, Object>> OrderbyExpression)
+        {
+            Orderby = OrderbyExpression;
+        }
+        protected void AddOrderbyDesc(Expression<Func<T, Object>> OrderbyDescExpression)
+        {
+            OrderbyDesc = OrderbyDescExpression;
+        }
+
+
+        // Pagination work
+        public int Take { get; private set; }
+
+        public int Skip { get; private set; }
+
+        public bool IsPagingEnabled { get; private set; }
+
+        protected void AddPaging(int skip, int take)
+        {
+            Take = take;
+            Skip = skip;    
+            IsPagingEnabled = true; 
+        }
+
     }
 }

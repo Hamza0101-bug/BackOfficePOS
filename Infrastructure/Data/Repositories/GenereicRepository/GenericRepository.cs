@@ -55,5 +55,10 @@ namespace Infrastructure.Data.Repositories.GenereicRepository
             return SpecificationEvaluator<T>.
                 GetQuary(_dataContext.Set<T>().AsQueryable(), spec);
         }
+
+        public async Task<int> CountAsync(ISpecification<T> spec)
+        {
+            return await ApplySpecification(spec).CountAsync();
+        }
     }
 }

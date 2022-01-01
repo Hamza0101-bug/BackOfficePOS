@@ -1,5 +1,7 @@
-﻿using Core.Entities;
+﻿using BackOfficePOS.Errors;
+using Core.Entities;
 using Core.Interfaces;
+using Core.Interfaces.GenericInterface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,25 +9,26 @@ namespace BackOfficePOS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoryController : ControllerBase
+    public class CategoryController : BaseApiController
     {
-        private readonly ICategoryRepository _categoryRepository;
-        public CategoryController(ICategoryRepository categoryRepository)
+        private readonly IGenericRepository<Category> _categoryRepo;
+        public CategoryController(IGenericRepository<Category> categoryRepo)
         {
-            _categoryRepository = categoryRepository;
+            _categoryRepo = categoryRepo;
         }
 
-        [HttpGet]
+        [HttpGet("Category")]
         public async Task<ActionResult<List<Category>>> GetProductCategories()
         {
-            var Categories = await _categoryRepository.GetProductCategoryAsync();
-            return Ok(Categories);
+            return Ok(await _categoryRepo.ListAllAsync());
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Brand>> GetProductCategorybyID(int id)
         {
-            var category = await _categoryRepository.GetProductCategorybyIDAsync(id);
+            var category = await _categoryRepo.GetByIdAsync(id);
+            if (category == null) return NotFound(new ApiResponse(404));
+
             return Ok(category);
 
         }

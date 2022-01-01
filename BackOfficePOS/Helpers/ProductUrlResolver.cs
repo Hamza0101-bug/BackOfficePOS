@@ -11,7 +11,11 @@ namespace BackOfficePOS.Helpers
         {
             _config = config;
         }
-        public string Resolve(Product source, ProductDto destination, string destMember, ResolutionContext context)
+        public string Resolve(
+            Product source, 
+            ProductDto destination, 
+            string destMember,
+            ResolutionContext context)
         {
             if(!string.IsNullOrEmpty(source.ImageUrl))
             {

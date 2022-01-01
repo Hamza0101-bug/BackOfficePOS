@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Interfaces.Specification.EntitySpecifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,33 @@ namespace Core.Interfaces.Specification
 {
     public class ProductWithBrandCategorySpecification : BaseSpecification<Product>
     {
-        public ProductWithBrandCategorySpecification()
+        public ProductWithBrandCategorySpecification(ProductSpecParams proprams) :
+            base 
+            (x => 
+            (string.IsNullOrEmpty(proprams.Search) || x.Name.ToLower().Contains(proprams.Search)) &&
+            (!proprams.BrandId.HasValue || x.BrandID== proprams.BrandId) && 
+            (!proprams.CategoryID.HasValue || x.CategoryID ==proprams.CategoryID))
         {
             AddIncludes(x => x.Category);
             AddIncludes(x => x.Brand);
+            AddOrderby(x => x.Name);
+            AddPaging(proprams.PageSize * (proprams.PageIndex - 1), proprams.PageSize);
+
+            if (!string.IsNullOrEmpty(proprams.Sort))
+            {
+                switch (proprams.Sort)
+                {
+                    case "priceAsc":
+                        AddOrderby(p => p.Price);
+                        break;
+                    case "priceDesc":
+                        AddOrderbyDesc(p => p.Price);
+                        break;
+                    default:
+                        AddOrderby(n => n.Name);
+                        break;
+                }
+            }
         }
 
         public ProductWithBrandCategorySpecification(int id) : base(x=>x.Id ==id)
