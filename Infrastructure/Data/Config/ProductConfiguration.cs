@@ -12,11 +12,12 @@ namespace Infrastructure.Data.Config
             builder.Property(p => p.Name).IsRequired();
             builder.Property(p => p.Description).IsRequired();
             builder.Property(p => p.Price).HasColumnType("decimal(18,2)");
-            builder.Property(p => p.ImageUrl).IsRequired();
+            builder.Property(p => p.ImageName).IsRequired();
             builder.HasOne(b => b.Brand).WithMany().
                     HasForeignKey(p => p.BrandID);
             builder.HasOne(b => b.Category).WithMany().
                     HasForeignKey(p => p.CategoryID);
+            
         }
     }
 }

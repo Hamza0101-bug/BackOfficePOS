@@ -8,8 +8,13 @@ using System.Threading.Tasks;
 
 namespace Core.Interfaces.Specification.EnitiySpecificationImplementation.SpectForData
 {
+
     public class BrandSpecification :BaseSpecification<Brand>
     {
+        public BrandSpecification(int id) : base(x=>x.Id == id)
+        {
+
+        }
         public BrandSpecification(CommonSpecParams commonSpecParams) :
           base(x =>
           (string.IsNullOrEmpty(commonSpecParams.Search) || x.Name.ToLower().Contains(commonSpecParams.Search))) 
@@ -34,5 +39,16 @@ namespace Core.Interfaces.Specification.EnitiySpecificationImplementation.SpectF
                 }
             }
         }
+    }
+
+    // For Count Specification
+    public class BrandCountSpec : BaseSpecification<Brand>
+    {
+        public BrandCountSpec(CommonSpecParams commonSpecParams) :
+          base(x =>
+          (string.IsNullOrEmpty(commonSpecParams.Search) || x.Name.ToLower().Contains(commonSpecParams.Search)))
+          {
+
+          }
     }
 }

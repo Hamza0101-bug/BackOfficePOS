@@ -18,30 +18,8 @@ namespace Infrastructure.Data.Repositories.GenereicRepository
         {
             _dataContext = dataContext;
         }
-        public async Task<T> GetByIdAsync(int id) // get record by id
-        {
-            try
-            {
-                return await _dataContext.Set<T>().FindAsync(id);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
 
-        public async Task<IReadOnlyList<T>> ListAllAsync() // get list of Provided Entity or class
-        {
-            try
-            {
-                return await _dataContext.Set<T>().ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-        public async Task<T> GetEntitywithspec(ISpecification<T> spec)
+        public async Task<T> GetEntityAsync(ISpecification<T> spec)
         {
             return await ApplySpecification(spec).FirstOrDefaultAsync();
         }
@@ -50,12 +28,26 @@ namespace Infrastructure.Data.Repositories.GenereicRepository
             return await ApplySpecification(spec).ToListAsync();
         }
 
-
         public async Task<int> CountAsync(ISpecification<T> spec)
         {
             return await ApplySpecification(spec).CountAsync();
         }
+        public async Task<bool> InsertUpdateAsync(T obj)
+        {
+            if(obj.Id==0)
+            {
+                await _dataContext.Set<T>().AddAsync(obj);
+                await _dataContext.SaveChangesAsync();
+            }
+            else
+            {
+                await _dataContext.Set<T>().AddAsync(obj);
+                _dataContext.Entry(obj).State = EntityState.Modified;
+            }
+            await _dataContext.SaveChangesAsync();
+            return true;
 
+        }
 
         //  we provide specification of any <T where T is Entity or class> this function Return us Query of <T where T is Entity or class>
         private IQueryable<T> ApplySpecification(ISpecification<T> spec) 
@@ -64,11 +56,6 @@ namespace Infrastructure.Data.Repositories.GenereicRepository
                 GetQuary(_dataContext.Set<T>().AsQueryable(), spec);
         }
 
-        public async Task<T> SaveAsync(T obj)
-        {
-             await _dataContext.Set<T>().AddAsync(obj);
-             await _dataContext.SaveChangesAsync();
-            return obj;
-        }
+        
     }
 }

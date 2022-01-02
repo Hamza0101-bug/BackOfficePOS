@@ -13,13 +13,14 @@ namespace Core.Interfaces.Specification
         {
 
         }
+        public Expression<Func<T, bool>> Criteria { get; } // Property
         public BaseSpecification( Expression<Func<T, bool>> criteria) // for whare purpose
         {
             Criteria = criteria;
         }
 
-        public Expression<Func<T, bool>> Criteria {get; } // Property
-        public List<Expression<Func<T, object>>> Includes { get; } = new List<Expression<Func<T, object>>>(); // Property
+       
+        public List<Expression<Func<T, object>>> Includes { get; } = new List<Expression<Func<T, object>>>(); // Object For Includs
         protected void AddIncludes(Expression<Func<T, Object>> IncludeExpression)
         {
             Includes.Add(IncludeExpression);

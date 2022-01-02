@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace Core.Interfaces.Specification.EntitySpecifications
 {
-    public class ProductSpecParams : CommonSpecParams
+    public class CategorySpecParams :CommonSpecParams
     {
-      
-        
-        public int? BrandId { get; set; }
-        public int? CategoryID { get; set; }
-       
+        public int ParantId { get; set; }
     }
 }

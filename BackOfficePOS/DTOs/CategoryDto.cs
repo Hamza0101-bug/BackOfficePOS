@@ -1,15 +1,17 @@
 ﻿namespace BackOfficePOS.DTOs
 {
-    public class BrandDto
+    public class CategoryDto
     {
-        public int Id { get; set; }
         public string? Name { get; set; }
+        public string? CategoryImage { get; set; }
         public string? Description { get; set; }
         public string? ShortDescription { get; set; }
-        public string? BrandImage { get; set; }
+        public int ParantID { get; set; }
     }
-    public class SaveBrandDTO : BrandDto
+
+    public class SaveCategoryDTO : CategoryDto
     {
         public IFormFile ImageFile { get; set; }
+
     }
 }

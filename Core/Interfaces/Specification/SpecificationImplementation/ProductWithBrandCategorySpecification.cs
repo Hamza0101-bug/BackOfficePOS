@@ -11,10 +11,15 @@ namespace Core.Interfaces.Specification
 {
     public class ProductWithBrandCategorySpecification : BaseSpecification<Product>
     {
+        public ProductWithBrandCategorySpecification(int id) : base(x => x.Id == id)
+        {
+            AddIncludes(x => x.Category);
+            AddIncludes(x => x.Brand);
+        }
         public ProductWithBrandCategorySpecification(ProductSpecParams proprams) :
             base 
             (x => 
-            (string.IsNullOrEmpty(proprams.Search) ||x.Description.ToLower().Contains(proprams.Search) || x.Name.ToLower().Contains(proprams.Search)) &&
+            (string.IsNullOrEmpty(proprams.Search) || x.Description.ToLower().Contains(proprams.Search) || x.Name.ToLower().Contains(proprams.Search)) &&
             (!proprams.BrandId.HasValue || x.BrandID== proprams.BrandId) && 
             (!proprams.CategoryID.HasValue || x.CategoryID ==proprams.CategoryID))
         {
@@ -39,11 +44,18 @@ namespace Core.Interfaces.Specification
                 }
             }
         }
+    }
 
-        public ProductWithBrandCategorySpecification(int id) : base(x=>x.Id ==id)
+    // For Count Spec 
+    public class ProductCountSpec : BaseSpecification<Product>
+    {
+        public ProductCountSpec(ProductSpecParams productSpecParams) :
+           base(x =>
+           (string.IsNullOrEmpty(productSpecParams.Search) || x.Description.ToLower().Contains(productSpecParams.Search) || x.Name.ToLower().Contains(productSpecParams.Search)) &&
+           (!productSpecParams.BrandId.HasValue || x.BrandID == productSpecParams.BrandId) &&
+           (!productSpecParams.CategoryID.HasValue || x.CategoryID == productSpecParams.CategoryID))
         {
-            AddIncludes(x => x.Category);
-            AddIncludes(x => x.Brand);
+
         }
     }
 }

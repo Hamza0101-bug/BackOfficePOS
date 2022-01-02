@@ -8,10 +8,10 @@ namespace Core.Interfaces.Specification.EntitySpecifications
 {
     public class CommonSpecParams
     {
-        private const int MaxPageSize = 3;
+        private const int MaxPageSize = 15;
         public int PageIndex { get; set; } = 1;
 
-        private int _pageSize = 2;
+        private int _pageSize = 15;
         public int PageSize
         {
             get => _pageSize;
