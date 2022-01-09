@@ -12,8 +12,8 @@ namespace Core.Interfaces.Specification
 
         // In this Interface we define expression for "critera" and Expression of "Includs" list
         // for navigation properies lik product have category so for get the product with category 
-        Expression<Func<T, bool>> Criteria { get; } // Where 
-        List<Expression<Func<T, Object>>> Includes { get; } // Includes
+        Expression<Func<T, bool>> Criteria { get; } // Where x=>x.id || x=>x.name
+        List<Expression<Func<T, Object>>> Includes { get; } // Includes .include(x=>x.category)
         Expression<Func<T, Object>> Orderby { get; } // Order by Ascs
         Expression<Func<T, Object>> OrderbyDesc { get; } // Order by Dscs
         int Take { get; } 

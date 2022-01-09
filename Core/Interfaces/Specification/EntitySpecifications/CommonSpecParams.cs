@@ -25,5 +25,16 @@ namespace Core.Interfaces.Specification.EntitySpecifications
             get => _search;
             set => _search = value.ToLower();
         }
+
+        private bool _active = true;
+        public bool Active 
+        { get => _active; 
+         set=> _active=value; 
+        }
+        private bool _allrecord = true;
+        public bool AllRecord 
+        { get=> _allrecord;
+          set=> _allrecord =value; }
+
     }
 }

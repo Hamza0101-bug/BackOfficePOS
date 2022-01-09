@@ -9,22 +9,25 @@ using System.Threading.Tasks;
 
 namespace Core.Interfaces.Specification
 {
-    public class ProductWithBrandCategorySpecification : BaseSpecification<Product>
+    public class ProductSpecification : BaseSpecification<Product>
     {
-        public ProductWithBrandCategorySpecification(int id) : base(x => x.Id == id)
+        public ProductSpecification(int id) : base(x => x.Id == id)
         {
             AddIncludes(x => x.Category);
             AddIncludes(x => x.Brand);
         }
-        public ProductWithBrandCategorySpecification(ProductSpecParams proprams) :
-            base 
-            (x => 
+        public ProductSpecification(ProductSpecParams proprams) :
+            base
+            (x =>
             (string.IsNullOrEmpty(proprams.Search) || x.Description.ToLower().Contains(proprams.Search) || x.Name.ToLower().Contains(proprams.Search)) &&
-            (!proprams.BrandId.HasValue || x.BrandID== proprams.BrandId) && 
-            (!proprams.CategoryID.HasValue || x.CategoryID ==proprams.CategoryID))
+            (string.IsNullOrEmpty(proprams.ItemCode) || x.ItemCode == proprams.ItemCode) &&
+            (!proprams.BrandId.HasValue || x.BrandID == proprams.BrandId) &&
+            (!proprams.CategoryID.HasValue || x.CategoryID == proprams.CategoryID)&&
+            (proprams.AllRecord || x.Active == proprams.Active))
         {
             AddIncludes(x => x.Category);
             AddIncludes(x => x.Brand);
+            AddIncludes(x => x.Branch);
             AddOrderby(x => x.Name);
             AddPaging(proprams.PageSize * (proprams.PageIndex - 1), proprams.PageSize);
 

@@ -7,6 +7,7 @@
         public string? Description { get; set; }
         public string? ShortDescription { get; set; }
         public string? BrandImage { get; set; }
+        public int BranchID { get; set; }
     }
     public class SaveBrandDTO : BrandDto
     {

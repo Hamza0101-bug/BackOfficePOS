@@ -12,6 +12,9 @@ namespace Core.Interfaces.Specification.EntitySpecifications
         
         public int? BrandId { get; set; }
         public int? CategoryID { get; set; }
-       
+        public int? BranchID { get; set; }
+        public string?  ItemCode { get; set; }
+
+
     }
 }

@@ -32,7 +32,7 @@ namespace BackOfficePOS.Controllers
         [HttpGet("Product")] // get all prducts
         public async Task<ActionResult<Pagination<ProductDto>>> GetProducts([FromQuery] ProductSpecParams proprams)
         {
-            var spec = new ProductWithBrandCategorySpecification(proprams); // this spec use for adding Craiteria or adding includs
+            var spec = new ProductSpecification(proprams); // this spec use for adding Craiteria or adding includs
             var countspec = new ProductCountSpec(proprams); // this spec use to get the count of records and current page siza and index
             var totalItem =   await _productRepo.CountAsync(countspec);
             var products = await _productRepo.ListAsync(spec);
@@ -43,7 +43,7 @@ namespace BackOfficePOS.Controllers
         [HttpGet("{id}")] // get product by id
         public async Task<ActionResult<ProductDto>> GetEntitywithspec(int id)
         {
-            var spec = new ProductWithBrandCategorySpecification(id);
+            var spec = new ProductSpecification(id);
             var product = await _productRepo.GetEntityAsync(spec);
             if (product == null) return NotFound(new ApiResponse(404));
             return Ok(_mapper.Map<Product, ProductDto>(product));

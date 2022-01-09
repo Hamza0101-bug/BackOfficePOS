@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Core.Interfaces.Specification.EntitySpecifications
 {
-    public class CategorySpecParams :CommonSpecParams
+    public class BrandSpecParams :CommonSpecParams
     {
-        public int ParantId { get; set; }
-        public int? BranchID { get; set; }
+        public int BranchID { get; set; }
+
     }
 }

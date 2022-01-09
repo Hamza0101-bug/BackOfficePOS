@@ -19,7 +19,7 @@ namespace Infrastructure.Data.Repositories.GenereicRepository
             _dataContext = dataContext;
         }
 
-        public async Task<T> GetEntityAsync(ISpecification<T> spec)
+        public async Task<T> GetEntityAsync(ISpecification<T> spec) // 
         {
             return await ApplySpecification(spec).FirstOrDefaultAsync();
         }
@@ -52,8 +52,7 @@ namespace Infrastructure.Data.Repositories.GenereicRepository
         //  we provide specification of any <T where T is Entity or class> this function Return us Query of <T where T is Entity or class>
         private IQueryable<T> ApplySpecification(ISpecification<T> spec) 
         {
-            return SpecificationEvaluator<T>.
-                GetQuary(_dataContext.Set<T>().AsQueryable(), spec);
+            return SpecificationEvaluator<T>.GetQuary(_dataContext.Set<T>().AsQueryable(), spec);
         }
 
         

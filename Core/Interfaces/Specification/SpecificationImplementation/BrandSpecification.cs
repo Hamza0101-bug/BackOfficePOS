@@ -15,17 +15,17 @@ namespace Core.Interfaces.Specification.EnitiySpecificationImplementation.SpectF
         {
 
         }
-        public BrandSpecification(CommonSpecParams commonSpecParams) :
+        public BrandSpecification(BrandSpecParams brandSpecParams) :
           base(x =>
-          (string.IsNullOrEmpty(commonSpecParams.Search) || x.Name.ToLower().Contains(commonSpecParams.Search))) 
-
-
+          (string.IsNullOrEmpty(brandSpecParams.Search) || x.Name.ToLower().Contains(brandSpecParams.Search))) 
         {
-            AddPaging(commonSpecParams.PageSize * (commonSpecParams.PageIndex - 1), commonSpecParams.PageSize);
+            AddIncludes(x => x.Branch);
+            AddOrderby(x => x.Name);
+            AddPaging(brandSpecParams.PageSize * (brandSpecParams.PageIndex - 1), brandSpecParams.PageSize);
 
-            if (!string.IsNullOrEmpty(commonSpecParams.Sort))
+            if (!string.IsNullOrEmpty(brandSpecParams.Sort))
             {
-                switch (commonSpecParams.Sort)
+                switch (brandSpecParams.Sort)
                 {
                     case "NameAsc":
                         AddOrderby(x => x.Name);
@@ -44,9 +44,9 @@ namespace Core.Interfaces.Specification.EnitiySpecificationImplementation.SpectF
     // For Count Specification
     public class BrandCountSpec : BaseSpecification<Brand>
     {
-        public BrandCountSpec(CommonSpecParams commonSpecParams) :
+        public BrandCountSpec(BrandSpecParams brandSpecParams) :
           base(x =>
-          (string.IsNullOrEmpty(commonSpecParams.Search) || x.Name.ToLower().Contains(commonSpecParams.Search)))
+          (string.IsNullOrEmpty(brandSpecParams.Search) || x.Name.ToLower().Contains(brandSpecParams.Search)))
           {
 
           }

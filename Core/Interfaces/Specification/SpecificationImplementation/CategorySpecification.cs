@@ -18,6 +18,8 @@ namespace Core.Interfaces.Specification.EnitiySpecificationImplementation.SpectF
           base(x =>
           (string.IsNullOrEmpty(categorySpecParams.Search) || x.ShortDescription.ToLower().Contains(categorySpecParams.Search) || x.Description.ToLower().Contains(categorySpecParams.Search) || x.Name.ToLower().Contains(categorySpecParams.Search)))
            {
+            AddIncludes(x => x.Branch);
+            AddOrderby(x => x.Name);
             AddPaging(categorySpecParams.PageSize * (categorySpecParams.PageIndex - 1), categorySpecParams.PageSize);
 
             if (!string.IsNullOrEmpty(categorySpecParams.Sort))

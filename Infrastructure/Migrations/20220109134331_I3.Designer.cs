@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20211227132403_initial2")]
-    partial class initial2
+    [Migration("20220109134331_I3")]
+    partial class I3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,31 @@ namespace Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("Core.Entities.Branch", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Branchs");
+                });
+
             modelBuilder.Entity("Core.Entities.Brand", b =>
                 {
                     b.Property<int>("Id")
@@ -31,10 +56,25 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("BranchID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BrandImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ShortDescription")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BranchID");
 
                     b.ToTable("Brands");
                 });
@@ -47,10 +87,28 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("BranchID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CategoryImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ParantID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ShortDescription")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BranchID");
 
                     b.ToTable("Categories");
                 });
@@ -63,6 +121,9 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("BranchID")
+                        .HasColumnType("int");
+
                     b.Property<int>("BrandID")
                         .HasColumnType("int");
 
@@ -73,7 +134,7 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageUrl")
+                    b.Property<string>("ImageName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -86,6 +147,8 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BranchID");
+
                     b.HasIndex("BrandID");
 
                     b.HasIndex("CategoryID");
@@ -93,19 +156,49 @@ namespace Infrastructure.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("Core.Entities.Brand", b =>
+                {
+                    b.HasOne("Core.Entities.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
+                });
+
+            modelBuilder.Entity("Core.Entities.Category", b =>
+                {
+                    b.HasOne("Core.Entities.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
+                });
+
             modelBuilder.Entity("Core.Entities.Product", b =>
                 {
+                    b.HasOne("Core.Entities.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Core.Entities.Brand", "Brand")
                         .WithMany()
                         .HasForeignKey("BrandID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Core.Entities.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Branch");
 
                     b.Navigation("Brand");
 

@@ -21,7 +21,7 @@ namespace Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("Core.Entities.Brand", b =>
+            modelBuilder.Entity("Core.Entities.Branch", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -29,7 +29,10 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("BrandImage")
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
@@ -38,10 +41,44 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Branchs");
+                });
+
+            modelBuilder.Entity("Core.Entities.Brand", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("BranchID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BrandImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ShortDescription")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BranchID");
 
                     b.ToTable("Brands");
                 });
@@ -54,6 +91,12 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("BranchID")
+                        .HasColumnType("int");
+
                     b.Property<string>("CategoryImage")
                         .HasColumnType("nvarchar(max)");
 
@@ -61,6 +104,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ParantID")
@@ -70,6 +114,8 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BranchID");
 
                     b.ToTable("Categories");
                 });
@@ -81,6 +127,12 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("BranchID")
+                        .HasColumnType("int");
 
                     b.Property<int>("BrandID")
                         .HasColumnType("int");
@@ -96,6 +148,9 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ItemCode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -103,7 +158,15 @@ namespace Infrastructure.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("ShortDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tags")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("BranchID");
 
                     b.HasIndex("BrandID");
 
@@ -112,19 +175,49 @@ namespace Infrastructure.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("Core.Entities.Brand", b =>
+                {
+                    b.HasOne("Core.Entities.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
+                });
+
+            modelBuilder.Entity("Core.Entities.Category", b =>
+                {
+                    b.HasOne("Core.Entities.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
+                });
+
             modelBuilder.Entity("Core.Entities.Product", b =>
                 {
+                    b.HasOne("Core.Entities.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Core.Entities.Brand", "Brand")
                         .WithMany()
                         .HasForeignKey("BrandID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Core.Entities.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryID")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Branch");
 
                     b.Navigation("Brand");
 
