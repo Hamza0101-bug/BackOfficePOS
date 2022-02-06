@@ -1,0 +1,1 @@
+{"ast":null,"code":"import { commonParams } from \"./commonparams\";\n;\n;\nexport class productParams extends commonParams {\n  constructor() {\n    super(...arguments);\n    this.brandId = null;\n    this.categoryID = null;\n    this.branchID = null;\n  }\n\n}","map":null,"metadata":{},"sourceType":"module"}

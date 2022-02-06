@@ -1,0 +1,1 @@
+{"ast":null,"code":"export class commonParams {\n  constructor() {\n    this.pageIndex = 1;\n    this.pageSize = 3;\n    this.sort = \"\";\n    this.search = \"\";\n    this.active = true;\n    this.allRecord = true;\n  }\n\n}","map":null,"metadata":{},"sourceType":"module"}

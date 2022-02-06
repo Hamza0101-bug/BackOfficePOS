@@ -1,0 +1,73 @@
+<div class="container">
+  <div class="row">
+    <section class="col-3">
+      <ng-container *ngIf="categroyList && brandList">
+      <h5 class="text-warning " style="margin-left: 3px;">Brands</h5>
+      <select class="custom-select my-3" (change)="onSelectSort($event.target.value)">
+        <option *ngFor="let item of sortOptionList" 
+        [value] ="item.value">
+        {{item.option}}
+       </option>
+      </select>
+      <h5 class="text-warning ml-3">Brands</h5>
+      <ul class="list-group my-3">
+        <li class="list-group-item" [class.active]="productSearchParams.brandId===null" 
+        (click)="productSearchParams.brandId=null; 
+                 productSearchParams.pageIndex =1;
+                 getProducts()">All</li>
+        <li class="list-group-item" [class.active]="brand.id===productSearchParams.brandId" 
+        *ngFor="let brand of brandList"
+        (click)="productSearchParams.brandId=brand.id; 
+                 productSearchParams.pageIndex =1;
+                 getProducts()">
+         {{brand.name}}
+        </li>
+      </ul>
+      <h5 class="text-warning ml-3">Categories</h5>
+      <ul class="list-group my-3">
+        <li class="list-group-item" [class.active]="productSearchParams.categoryID===null"
+         (click)="productSearchParams.categoryID=null; productSearchParams.pageIndex =1; getProducts()">All</li>
+        <li class="list-group-item" [class.active]="category.id===productSearchParams.categoryID"
+         *ngFor="let category of categroyList"
+        (click)="productSearchParams.categoryID=category.id; 
+                 productSearchParams.pageIndex =1;
+                 getProducts()">
+         {{category.name}}
+        </li>
+      </ul>
+    </ng-container>
+    </section>
+    <section class="col-9">
+      <div class="d-flex justify-content-between align-items-center" style="padding: 2px;">
+       <app-pagination-header 
+        [pageIndex]="productSearchParams.pageIndex"
+        [pageSize]="productSearchParams.pageSize"
+        [totalCount]="totalCount" >
+      </app-pagination-header>
+        <div class="form-inline mt-2" *ngIf="productList">
+          <input  (keyup.enter)="productSearchParams.pageIndex =1;;productSearch()" class="form-control mr-2" style="width: 300px;" placeholder="Search" #search>
+          <button class="btn btn-outline-primary my-2" (click)="productSearchParams.pageIndex =1;productSearch()">Search</button>
+          <button class="btn btn-outline-success ml-2 my-2" (click)="onReset()" >Reset</button>
+        </div>
+      </div>
+      <div class="row">
+        <div *ngFor="let item of productList" class="col-md-4 " style="margin-top: 10px; margin-bottom: 10px;">
+          <app-productcard [product]="item"></app-productcard>
+        </div>
+
+      </div>
+      <div class="d-flex justify-contentcenter">
+       <app-pager
+       [totalCount]="totalCount"
+       [pageSize] = "productSearchParams.pageSize"
+       (pageChanged)="onPageChange($event)"
+       >
+
+       </app-pager>
+
+      </div>
+     
+    </section>
+  </div>
+
+</div>
