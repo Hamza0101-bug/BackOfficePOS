@@ -20,29 +20,37 @@ namespace BackOfficePOS.Controllers
         private readonly IWebHostEnvironment _webHostEnvironment;
 
         private readonly IMapper _mapper;
-        public CategoryController(IGenericRepository<Category> categoryRepo , IMapper mapper, IWebHostEnvironment webHostEnvironment)
+        public CategoryController(IGenericRepository<Category> categoryRepo, IMapper mapper, IWebHostEnvironment webHostEnvironment)
         {
             _categoryRepo = categoryRepo;
             _mapper = mapper;
             _webHostEnvironment = webHostEnvironment;
         }
 
-        [HttpGet("Category")]
-        public async Task<ActionResult<Pagination<Category>>> GetProductCategories(CategorySpecParams categorySpecParams)
+        [HttpPost("Categories")]
+        public async Task<ActionResult<Pagination<CategoryDto>>> GetProductCategories(CategorySpecParams categorySpecParams)
         {
             var spec = new CategorySpecification(categorySpecParams);
             var category = await _categoryRepo.ListAsync(spec);
 
             var Countspec = new CategoryCountSpec(categorySpecParams);
-            var totalItem =  await _categoryRepo.CountAsync(Countspec);
+            var totalItem = await _categoryRepo.CountAsync(Countspec);
 
             var data = _mapper.Map<IReadOnlyList<Category>, IReadOnlyList<CategoryDto>>(category); // Data with mapping
             return Ok(new Pagination<CategoryDto>(categorySpecParams.PageIndex, categorySpecParams.PageSize, totalItem, data));
 
         }
+        [HttpGet("AllCategories")]
+        public async Task<ActionResult<CategoryDto>> GetAllCategories()
+        {
+            var spec = new CategorySpecification();
+            var category = await _categoryRepo.ListAsync(spec);
+            var data = _mapper.Map<IReadOnlyList<Category>, IReadOnlyList<CategoryDto>>(category);
+            return Ok(data);
+        }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Category>> GetProductCategorybyID(int id)
+        public async Task<ActionResult<CategoryDto>> GetProductCategorybyID(int id)
         {
             var spec = new CategorySpecification(id);
             var category = await _categoryRepo.GetEntityAsync(spec);
@@ -68,7 +76,7 @@ namespace BackOfficePOS.Controllers
                 }
             }
             savecategoryDto.CategoryImage = savecategoryDto.ImageFile.FileName;
-            var category = _mapper.Map<CategoryDto, Category>(savecategoryDto);
+            var category = _mapper.Map<SaveCategoryDTO, Category>(savecategoryDto);
             var added = await _categoryRepo.InsertUpdateAsync(category);
             return Ok(added);
         }

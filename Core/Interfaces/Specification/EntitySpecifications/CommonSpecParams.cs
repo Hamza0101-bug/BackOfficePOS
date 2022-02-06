@@ -34,7 +34,8 @@ namespace Core.Interfaces.Specification.EntitySpecifications
         private bool _allrecord = true;
         public bool AllRecord 
         { get=> _allrecord;
-          set=> _allrecord =value; }
+          set=> _allrecord =value; 
+        }
 
     }
 }

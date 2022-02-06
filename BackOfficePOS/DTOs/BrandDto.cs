@@ -1,6 +1,6 @@
 ﻿namespace BackOfficePOS.DTOs
 {
-    public class BrandDto
+    public class BrandBaseDto
     {
         public int Id { get; set; }
         public string? Name { get; set; }
@@ -9,7 +9,11 @@
         public string? BrandImage { get; set; }
         public int BranchID { get; set; }
     }
-    public class SaveBrandDTO : BrandDto
+    public class BrandDto: BrandBaseDto
+    {
+        public string? Branch { get; set; }
+    }
+    public class SaveBrandDTO : BrandBaseDto
     {
         public IFormFile ImageFile { get; set; }
     }

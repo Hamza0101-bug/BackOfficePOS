@@ -30,20 +30,28 @@ namespace BackOfficePOS.Controllers
         }
 
         [HttpPost("Brands")]
-        public async Task<ActionResult<Pagination<Brand>>> GetProductBrands([FromQuery] BrandSpecParams brandSpecParams)
+        public async Task<ActionResult<Pagination<BrandDto>>> GetProductBrands([FromQuery] BrandSpecParams brandSpecParams)
         {
             var spec = new BrandSpecification(brandSpecParams); // this spec use for adding Craiteria or adding includs
             var brands = await _brandRepo.ListAsync(spec);
 
             var countspec = new BrandCountSpec(brandSpecParams); // this spec use to get the count of records and current page siza and index
             var totalItem = await _brandRepo.CountAsync(countspec);
-
             var data = _mapper.Map<IReadOnlyList<Brand>, IReadOnlyList<BrandDto>>(brands); // Data with mapping
             return Ok(new Pagination<BrandDto>(brandSpecParams.PageIndex, brandSpecParams.PageSize, totalItem, data));
         }
 
+        [HttpGet("AllBrands")]
+        public async Task<ActionResult<BrandDto>> GetAllCategories()
+        {
+            var spec = new BrandSpecification();
+            var brands = await _brandRepo.ListAsync(spec);
+            var data = _mapper.Map<IReadOnlyList<Brand>, IReadOnlyList<BrandDto>>(brands);
+            return Ok(data);
+        }
+
         [HttpGet("{id}")]
-        public async Task<ActionResult<Brand>> GetProductCategorybyID(int id)
+        public async Task<ActionResult<BrandDto>> GetProductCategorybyID(int id)
         {
             var spec = new BrandSpecification(id);
             var category = await _brandRepo.GetEntityAsync(spec);

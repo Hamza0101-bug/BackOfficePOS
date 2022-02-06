@@ -11,6 +11,10 @@ namespace Core.Interfaces.Specification.EnitiySpecificationImplementation.SpectF
 
     public class BrandSpecification :BaseSpecification<Brand>
     {
+        public BrandSpecification() : base()
+        {
+
+        }
         public BrandSpecification(int id) : base(x=>x.Id == id)
         {
 

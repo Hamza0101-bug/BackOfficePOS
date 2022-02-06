@@ -54,7 +54,5 @@ namespace Infrastructure.Data.Repositories.GenereicRepository
         {
             return SpecificationEvaluator<T>.GetQuary(_dataContext.Set<T>().AsQueryable(), spec);
         }
-
-        
     }
 }

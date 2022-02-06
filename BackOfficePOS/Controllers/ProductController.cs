@@ -29,15 +29,15 @@ namespace BackOfficePOS.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
-        [HttpGet("Product")] // get all prducts
-        public async Task<ActionResult<Pagination<ProductDto>>> GetProducts([FromQuery] ProductSpecParams proprams)
+        [HttpPost("Product")] // get all prducts
+        public async Task<ActionResult<Pagination<ProductDto>>> GetProducts([FromBody] ProductSpecParams proprams)
         {
             var spec = new ProductSpecification(proprams); // this spec use for adding Craiteria or adding includs
             var countspec = new ProductCountSpec(proprams); // this spec use to get the count of records and current page siza and index
-            var totalItem =   await _productRepo.CountAsync(countspec);
+            var totalItem = await _productRepo.CountAsync(countspec);
             var products = await _productRepo.ListAsync(spec);
             var data = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductDto>>(products);
-            return Ok(new Pagination<ProductDto>(proprams.PageIndex, proprams.PageSize,totalItem,data));
+            return Ok(new Pagination<ProductDto>(proprams.PageIndex, proprams.PageSize, totalItem, data));
         }
 
         [HttpGet("{id}")] // get product by id

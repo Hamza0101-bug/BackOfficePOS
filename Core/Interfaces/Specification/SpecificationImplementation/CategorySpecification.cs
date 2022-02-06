@@ -10,10 +10,16 @@ namespace Core.Interfaces.Specification.EnitiySpecificationImplementation.SpectF
 {
     public class CategorySpecification : BaseSpecification<Category>
     {
+
+        public CategorySpecification() : base()
+        {
+            AddIncludes(x => x.Branch);
+        }
         public CategorySpecification(int id) : base(x => x.Id == id)
         {
-
+            AddIncludes(x => x.Branch);
         }
+        
         public CategorySpecification(CategorySpecParams categorySpecParams) :
           base(x =>
           (string.IsNullOrEmpty(categorySpecParams.Search) || x.ShortDescription.ToLower().Contains(categorySpecParams.Search) || x.Description.ToLower().Contains(categorySpecParams.Search) || x.Name.ToLower().Contains(categorySpecParams.Search)))
@@ -52,7 +58,6 @@ namespace Core.Interfaces.Specification.EnitiySpecificationImplementation.SpectF
     }
 
 
-    // for id 
    
 
 }

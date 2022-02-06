@@ -11,8 +11,6 @@
         public string? Tags { get; set; }
         public bool Active { get; set; }
         public string? ItemCode { get; set; }
-
-
         public int BrandID { get; set; }
         public int CategoryID { get; set; }
         public int BranchID{ get; set; }

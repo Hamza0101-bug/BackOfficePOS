@@ -2,6 +2,7 @@
 using BackOfficePOS.Helpers;
 using Core.Interfaces;
 using Core.Interfaces.GenericInterface;
+using Infrastructure.Data;
 using Infrastructure.Data.Repositories;
 using Infrastructure.Data.Repositories.GenereicRepository;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,7 @@ namespace BackOfficePOS.Extensions
 
 
             services.AddAutoMapper(typeof(MappingProfilescs));
+            services.AddScoped<IBasketRepository, BasketRepository>();
 
             services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
             // Add services to the container.

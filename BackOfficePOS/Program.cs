@@ -9,6 +9,7 @@ using Infrastructure.Data.Repositories;
 using Infrastructure.Data.Repositories.GenereicRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,8 +28,17 @@ var builder = WebApplication.CreateBuilder(args);
 //       logger.LogError(ex, "An Error Occured during Migrations");
 //   }
 // }
+
 builder.Services.AddApplicationServices();
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddSingleton<IConnectionMultiplexer>(c =>
+{
+    var configuration = ConfigurationOptions.
+    Parse(builder.Configuration.GetConnectionString("Redis"), true);
+
+    return ConnectionMultiplexer.Connect(configuration);
+});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerDocumention();

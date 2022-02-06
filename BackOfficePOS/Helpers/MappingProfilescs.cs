@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using API.Dtos;
+using AutoMapper;
 using BackOfficePOS.DTOs;
 using Core.Entities;
 
@@ -17,9 +18,11 @@ namespace BackOfficePOS.Helpers
               .ForMember(d => d.ImageName, o => o.MapFrom<ProductImageUrlResolver>());
 
             CreateMap<Brand, BrandDto>()
+                .ForMember(d => d.Branch, o => o.MapFrom(s => s.Branch.Name))
                 .ForMember(d => d.BrandImage, o => o.MapFrom<BrandImageUrlResolver>());
 
             CreateMap<Category, CategoryDto>()
+                .ForMember(d => d.Branch, o => o.MapFrom(s => s.Branch.Name))
                 .ForMember(d => d.CategoryImage, o => o.MapFrom<CategoryImageUrlResolver>());
             CreateMap<Branch, BranchDto>();
 
@@ -29,6 +32,8 @@ namespace BackOfficePOS.Helpers
             CreateMap<SaveBrandDTO , Brand>();
             CreateMap<CategoryDto , Category>();
             CreateMap<BranchDto , Branch>();
+            CreateMap<CustomerBasketDto, CustomerBasket>();
+            CreateMap<BasketItemDto, BasketItem>();
         }
     }
 }
