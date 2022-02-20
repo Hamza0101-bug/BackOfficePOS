@@ -25,6 +25,8 @@ namespace API.Dtos
         public string Brand { get; set; }
 
         [Required]
-        public string Type { get; set; }
+        public string Category { get; set; }
+        [Required]
+        public string Branch { get; set; }
     }
 }

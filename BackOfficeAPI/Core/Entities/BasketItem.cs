@@ -15,5 +15,6 @@ namespace Core.Entities
         public string? PictureUrl { get; set; }
         public string? Brand { get; set; }
         public string? Category { get; set; }
+        public string? Branch { get; set; }
     }
 }

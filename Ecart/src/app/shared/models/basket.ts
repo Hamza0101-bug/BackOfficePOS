@@ -13,13 +13,20 @@ export interface IBasketItem {
     quantity: number;
     pictureUrl: string;
     brand: string;
-    type: string;
+    category: string;
+    branch: string;
 }
 
 export class Basket implements IBasket {
     id = uuidv4();
     items: IBasketItem[] = [];
 }
+ export interface IBasketTotals
+ {
+     shipping: number;
+     subtotal: Number;
+     total:number;
+ }
 
 // clientSecret?: string;
 // paymentIntentId?: string;
