@@ -2,6 +2,7 @@
 using AutoMapper;
 using BackOfficePOS.DTOs;
 using Core.Entities;
+using Core.Entities.Identity;
 
 namespace BackOfficePOS.Helpers
 {
@@ -25,6 +26,7 @@ namespace BackOfficePOS.Helpers
                 .ForMember(d => d.Branch, o => o.MapFrom(s => s.Branch.Name))
                 .ForMember(d => d.CategoryImage, o => o.MapFrom<CategoryImageUrlResolver>());
             CreateMap<Branch, BranchDto>();
+            CreateMap<Address, AddressDto>();
 
 
             // DTO TO Entity Mapping for save
